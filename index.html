@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>每日喝水记录</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="art-stage" aria-hidden="true">
+    <div class="art-strip art-top"></div>
+    <div class="art-strip art-left"></div>
+    <div class="art-strip art-right"></div>
+  </div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Water Buddy</p>
+        <h1>每日喝水记录</h1>
+        <p class="date-line" id="todayText"></p>
+      </div>
+      <div class="top-actions">
+        <button class="mini-button" id="randomBgBtn" type="button" title="随机背景">换背景</button>
+        <label class="mini-button file-button" title="添加自己的背景图片">
+          加图片
+          <input id="bgUpload" type="file" accept="image/*" multiple>
+        </label>
+      </div>
+    </header>
+
+    <section class="summary-panel" aria-label="今日饮水进度">
+      <div class="mascot" aria-hidden="true">💧</div>
+      <div class="summary-grid">
+        <div>
+          <span class="label">今日目标</span>
+          <strong id="goalText">3000 mL</strong>
+        </div>
+        <div>
+          <span class="label">已喝</span>
+          <strong id="totalText">0 mL</strong>
+        </div>
+        <div>
+          <span class="label">还差</span>
+          <strong id="remainText">3000 mL</strong>
+        </div>
+        <div>
+          <span class="label">完成率</span>
+          <strong id="percentText">0%</strong>
+        </div>
+      </div>
+      <div class="progress-wrap" aria-label="完成进度">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p class="status-text" id="statusText">今天刚开始，先用你的杯子喝一杯吧。</p>
+    </section>
+
+    <section class="dashboard">
+      <div class="panel quick-panel">
+        <div class="panel-heading">
+          <h2>快速记录</h2>
+          <span id="lastDrinkText">还没有记录</span>
+        </div>
+
+        <div class="cup-actions" id="quickActions">
+          <button type="button" data-amount="400">
+            <span class="cup-icon small-cup"></span>
+            <strong>400 mL</strong>
+            <small>小杯 1 杯</small>
+          </button>
+          <button type="button" data-amount="600">
+            <span class="cup-icon big-cup"></span>
+            <strong>600 mL</strong>
+            <small>大杯 1 杯</small>
+          </button>
+          <button type="button" data-amount="800">
+            <span class="cup-icon double-cup"></span>
+            <strong>800 mL</strong>
+            <small>小杯 2 杯</small>
+          </button>
+          <button type="button" data-amount="1000">
+            <span class="cup-icon mixed-cup"></span>
+            <strong>1000 mL</strong>
+            <small>400 + 600</small>
+          </button>
+          <button type="button" data-amount="1200">
+            <span class="cup-icon double-cup tall"></span>
+            <strong>1200 mL</strong>
+            <small>大杯 2 杯</small>
+          </button>
+        </div>
+
+        <form class="custom-form" id="customForm">
+          <label for="customAmount">临时喝了别的量</label>
+          <div class="input-row">
+            <input id="customAmount" type="number" min="1" max="3000" step="10" placeholder="例如 550">
+            <button type="submit">添加</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel today-panel">
+        <div class="panel-heading">
+          <h2>今日记录</h2>
+          <button class="text-button" id="clearTodayBtn" type="button">清空</button>
+        </div>
+        <ul class="log-list" id="logList"></ul>
+        <p class="empty-state" id="emptyLogText">还没有记录，点一下你的杯子就会出现在这里。</p>
+      </div>
+
+      <div class="panel settings-panel">
+        <div class="panel-heading">
+          <h2>设置</h2>
+          <span>自动保存</span>
+        </div>
+
+        <form id="settingsForm" class="settings-form">
+          <label>
+            每日目标
+            <input id="normalGoal" type="number" min="500" max="8000" step="100">
+          </label>
+          <label class="toggle-row">
+            <span>页面内提醒</span>
+            <input id="reminderEnabled" type="checkbox">
+          </label>
+          <label>
+            提醒间隔
+            <select id="reminderMinutes">
+              <option value="60">60 分钟</option>
+              <option value="90">90 分钟</option>
+              <option value="120">120 分钟</option>
+            </select>
+          </label>
+          <button type="submit">保存设置</button>
+        </form>
+      </div>
+
+      <div class="panel history-panel">
+        <div class="panel-heading">
+          <h2>最近 7 天</h2>
+          <span id="weekAverageText">平均 0 mL</span>
+        </div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
