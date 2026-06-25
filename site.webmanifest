@@ -1,0 +1,21 @@
+{
+  "name": "每日喝水记录",
+  "short_name": "喝水记录",
+  "description": "记录每天喝水量的个人小网站",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7fbfc",
+  "theme_color": "#1597a5",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
