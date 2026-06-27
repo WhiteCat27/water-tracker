@@ -157,6 +157,9 @@ function saveSettings(event) {
   state.settings.goal = clampGoal(els.normalGoal.value);
   state.settings.reminderEnabled = els.reminderEnabled.checked;
   state.settings.reminderMinutes = Number(els.reminderMinutes.value);
+  if (state.settings.reminderEnabled) {
+    requestNotificationPermission();
+  }
   saveState();
   render();
   showToast("设置已保存。");
@@ -308,6 +311,39 @@ function showToast(message) {
   toastTimer = setTimeout(() => els.toast.classList.remove("show"), 2600);
 }
 
+function requestNotificationPermission() {
+  if (!("Notification" in window)) {
+    showToast("当前浏览器不支持系统通知。");
+    return;
+  }
+
+  if (Notification.permission === "default") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        showToast("浏览器通知已开启。");
+      } else {
+        showToast("浏览器通知未授权，只会在页面内提醒。");
+      }
+    });
+  }
+}
+
+function showDesktopNotification(message) {
+  if (!("Notification" in window) || Notification.permission !== "granted") {
+    showToast(message);
+    return;
+  }
+
+  new Notification("该喝水了", {
+    body: message,
+    icon: "icon-192.png",
+    badge: "icon-192.png",
+    tag: "water-reminder",
+    renotify: true
+  });
+  showToast(message);
+}
+
 function checkReminder() {
   if (!state.settings.reminderEnabled) return;
   const logs = todayLogs();
@@ -319,7 +355,7 @@ function checkReminder() {
 
   if (now - referenceTime >= interval && lastReminderDate !== reminderKey) {
     lastReminderDate = reminderKey;
-    showToast(`距离上次喝水已超过 ${state.settings.reminderMinutes} 分钟，建议喝一个 400 mL 小杯。`);
+    showDesktopNotification(`距离上次喝水已超过 ${state.settings.reminderMinutes} 分钟，建议喝一个 400 mL 小杯。`);
   }
 }
 
