@@ -7,14 +7,19 @@ $ErrorActionPreference = "Stop"
 
 $taskName = "WaterTrackerReminder"
 $scriptPath = Join-Path $PSScriptRoot "water-reminder-toast.ps1"
+$launcherPath = Join-Path $PSScriptRoot "run-reminder-hidden.vbs"
 
 if (-not (Test-Path $scriptPath)) {
   throw "Reminder script not found: $scriptPath"
 }
 
+if (-not (Test-Path $launcherPath)) {
+  throw "Hidden launcher not found: $launcherPath"
+}
+
 $action = New-ScheduledTaskAction `
-  -Execute "powershell.exe" `
-  -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptPath`""
+  -Execute "wscript.exe" `
+  -Argument "`"$launcherPath`""
 
 $trigger = New-ScheduledTaskTrigger `
   -Once `
